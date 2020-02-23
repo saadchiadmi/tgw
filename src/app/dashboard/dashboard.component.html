@@ -1,0 +1,87 @@
+<div *ngIf="data">
+    <div [ngBusy]="busy"></div>
+    <h1 class="text-center">Production de déchets par mois</h1>
+    <div class="gray margin card shadow-sm">
+        <div class="card-body" >
+            <p>Sélectionnez ou cochez pour filtrer vos données</p>
+            <div class="row">
+                <div class="col-4">
+                    <p-dropdown [options]="raisons" placeholder="Toutes les raisons sociales" [(ngModel)]="selectedRaison" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+                    <br><br>
+                    <p-dropdown [options]="sites" placeholder="Tous les sites" [(ngModel)]="selectedSites" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+                    <br><br><br>
+                    <div class="body-light card-body" >
+                        <div class="row justify-content-around">
+                            <div *ngFor="let type of type_collecte">
+                                &nbsp;&nbsp;&nbsp;
+                                <p-checkbox name="{{type}}" value="{{type}}" label="Collect {{type}}"></p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <p-dropdown [options]="years" placeholder="Toutes les années" [(ngModel)]="selectedYear" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+                    <br><br>
+                    <p-dropdown [options]="mounths" placeholder="Tous les mois" [(ngModel)]="selectedMounth" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+                    <br><br><br>
+                    <button pButton type="button" label="Actualiser" class="ui-button-success btn-block" ></button>
+                </div>
+                <div class="col-5">
+                    <div class="body-light card-body" >
+                        <div class="row">
+                            <div *ngFor="let dechet of dechets">
+                                &nbsp;&nbsp;&nbsp;
+                                <p-checkbox name="{{dechet}}" value="{{dechet}}" label="{{dechet}}"></p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="margin card shadow-sm">
+        <div class="card-body">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Chiffres en Kg</th>
+                        <th colspan="12">Date</th>
+                        <th rowspan="2">Total</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                        <td>Entrepot</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
