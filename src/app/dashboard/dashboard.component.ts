@@ -14,13 +14,16 @@ export class DashboardComponent implements OnInit {
 
   constructor(private excelDatatServices : ExcelDataService) { }
   data : Data[];
+  filteredData : Data[];
   dechets : string[];
   type_collecte : string[];
   years : SelectItem[]= []; selectedYear : number;
+  yearsLoop : SelectItem[]= [];
   mounths : SelectItem[] = []; selectedMounth : number;
   sites : SelectItem[]= []; selectedSites : string;
   raisons : SelectItem[]= []; selectedRaison : string;
   busy: Subscription;
+  dechetClo = [{ field: 'dechets', header: 'Chiffres en Kg' }];
   ngOnInit() {
     this.setData();
     console.log(this.data);
@@ -43,6 +46,7 @@ export class DashboardComponent implements OnInit {
       var first_sheet = workbook.SheetNames[0];
       var workSheet = workbook.Sheets[first_sheet];
       this.data = XLSX.utils.sheet_to_json(workSheet,{raw : true})
+      this.filteredData = this.data;
       this.dechets = this.data.map(d => d.Dechet).filter((value, index, self) => self.indexOf(value) === index).sort();
       this.type_collecte = this.data.map(d => d.Type_collecte).filter((value, index, self) => self.indexOf(value) === index).sort();
       this.data.map(d => d.Annee).filter((value, index, self) => self.indexOf(value) === index).forEach(y => this.years.push({label: '' + y, value: y}));
@@ -51,10 +55,29 @@ export class DashboardComponent implements OnInit {
       }
       this.data.map(d => d.Site).filter((value, index, self) => self.indexOf(value) === index).forEach(s => this.sites.push({label: '' + s, value: s}));
       this.data.map(d => d.RS_client).filter((value, index, self) => self.indexOf(value) === index).forEach(rs => this.raisons.push({label: '' + rs, value: rs}));
+      this.yearsLoop=this.years;
       console.log(this.sites);
     }
     rec.send();
     
+  }
+
+  filtre(){
+    if(this.selectedYear) {
+      this.years=[{label: '' + this.selectedYear, value: this.selectedYear}]
+    }
+    this.filteredData = this.data.filter(d => d.RS_client===this.selectedRaison).filter(d=>d.Annee===this.selectedYear);
+    console.log(this.filteredData)
+  }
+
+  someOfMounth(dechet : string, mounth : number, year : number): string{
+    return this.filteredData.filter(d => d.Dechet===dechet).filter(d => d.Mois == mounth).filter(d => d.Annee == year)
+                      .reduce((sum, current) => sum + current.Quantite, 0).toFixed(2);
+  }
+
+  someOfYear(dechet : string, year : number): string{
+    return this.filteredData.filter(d => d.Dechet===dechet).filter(d => d.Annee == year)
+                      .reduce((sum, current) => sum + current.Quantite, 0).toFixed(2);
   }
 
 }

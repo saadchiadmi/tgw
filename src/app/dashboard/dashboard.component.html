@@ -20,11 +20,11 @@
                     </div>
                 </div>
                 <div class="col">
-                    <p-dropdown [options]="years" placeholder="Toutes les années" [(ngModel)]="selectedYear" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+                    <p-dropdown [options]="yearsLoop" placeholder="Toutes les années" [(ngModel)]="selectedYear" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
                     <br><br>
                     <p-dropdown [options]="mounths" placeholder="Tous les mois" [(ngModel)]="selectedMounth" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
                     <br><br><br>
-                    <button pButton type="button" label="Actualiser" class="ui-button-success btn-block" ></button>
+                    <button pButton type="button" (click)="filtre()" label="Actualiser" class="ui-button-success btn-block" ></button>
                 </div>
                 <div class="col-5">
                     <div class="body-light card-body" >
@@ -41,47 +41,36 @@
     </div>
     <div class="margin card shadow-sm">
         <div class="card-body">
-            <table class="table ">
-                <thead>
+            <p-table [value]="dechets">
+                <ng-template pTemplate="header">
                     <tr>
                         <th rowspan="2">Chiffres en Kg</th>
-                        <th colspan="12">Date</th>
-                        <th rowspan="2">Total</th>
+                        <ng-container *ngFor="let year of years">
+                            <th  colspan="12">{{year.label}}</th>
+                            <th rowspan="2">Total</th>
+                        </ng-container>
                     </tr>
                     <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                        <th>7</th>
-                        <th>8</th>
-                        <th>9</th>
-                        <th>10</th>
-                        <th>11</th>
-                        <th>12</th>
+                        <ng-container *ngFor="let year of years">
+                            <ng-container *ngFor="let mounth of mounths">
+                                <th>{{mounth.label}}</th>
+                            </ng-container>
+                        </ng-container>
                     </tr>
-                </thead>
-                <tbody>
+                </ng-template>
+                <ng-template pTemplate="body" let-dechet>
                     <tr>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
-                        <td>Entrepot</td>
+                        <td>{{dechet}}</td>
+                        <ng-container *ngFor="let year of years">
+                            <ng-container *ngFor="let mounth of mounths">
+                                <th>{{someOfMounth(dechet, mounth.value, year.value)}}</th>
+                            </ng-container>
+                            <td>{{someOfYear(dechet, year.value)}}</td>
+                        </ng-container>
                     </tr>
-                </tbody>
-            </table>
+                </ng-template>
+                
+            </p-table>
         </div>
     </div>
 </div>

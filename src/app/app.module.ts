@@ -18,6 +18,7 @@ import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {NgBusyModule} from 'ng-busy';
 import {FormsModule} from '@angular/forms';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {FormsModule} from '@angular/forms';
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
