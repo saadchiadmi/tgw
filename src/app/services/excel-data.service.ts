@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as  XLSX from 'xlsx'
 import { Data } from '../entities/data';
 import { Observable, of } from 'rxjs';
+import { async } from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class ExcelDataService {
 
   constructor() { }
 
-  getData() : Observable<Data[]>{
+  getData() : Promise<Data[]>{
     var rec = new XMLHttpRequest();
     rec.open("GET","assets/DATA.xls", true)
     rec.responseType= "arraybuffer";
@@ -30,6 +31,6 @@ export class ExcelDataService {
     }
     rec.send();
     
-    return of(result);
+    return of(result).toPromise();
   }
 }

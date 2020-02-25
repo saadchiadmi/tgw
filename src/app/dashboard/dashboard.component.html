@@ -1,7 +1,7 @@
 <div *ngIf="data">
     <div [ngBusy]="busy"></div>
     <h1 class="text-center">Production de déchets par mois</h1>
-    <div class="gray margin card shadow-sm">
+    <div class="margin card shadow-sm">
         <div class="card-body" >
             <p>Sélectionnez ou cochez pour filtrer vos données</p>
             <div class="row">
@@ -11,12 +11,7 @@
                     <p-dropdown [options]="sites" placeholder="Tous les sites" [(ngModel)]="selectedSites" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
                     <br><br><br>
                     <div class="body-light card-body" >
-                        <div class="row justify-content-around">
-                            <div *ngFor="let type of type_collecte">
-                                &nbsp;&nbsp;&nbsp;
-                                <p-checkbox name="{{type}}" value="{{type}}" label="Collect {{type}}"></p-checkbox>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="col">
@@ -27,12 +22,12 @@
                     <button pButton type="button" (click)="filtre()" label="Actualiser" class="ui-button-success btn-block" ></button>
                 </div>
                 <div class="col-5">
-                    <div class="body-light card-body" >
-                        <div class="row">
-                            <div *ngFor="let dechet of dechets">
-                                &nbsp;&nbsp;&nbsp;
-                                <p-checkbox name="{{dechet}}" value="{{dechet}}" label="{{dechet}}"></p-checkbox>
-                            </div>
+                    <p-multiSelect [options]="dechets"  [defaultLabel]="'Tous les déchets'" [(ngModel)]="selectedDechets" autoWidth="false" [style]="{'width':'100%'}"></p-multiSelect>
+                    <br><br>
+                    <div class="row">
+                        <div *ngFor="let type of type_collecte">
+                            &nbsp;&nbsp;&nbsp;
+                            <p-checkbox name="{{type}}" value="{{type}}" label="Collect {{type}}"></p-checkbox>
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {NgBusyModule} from 'ng-busy';
 import {FormsModule} from '@angular/forms';
 import {TableModule} from 'primeng/table';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {TableModule} from 'primeng/table';
   ],
   imports: [
     BrowserModule,
+    MultiSelectModule,
     NgBusyModule,
     FormsModule,
     CheckboxModule,
