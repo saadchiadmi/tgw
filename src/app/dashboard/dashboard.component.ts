@@ -62,11 +62,24 @@ export class DashboardComponent implements OnInit {
     
   }
 
-  filtre(){
+  filter(){
     if(this.selectedYear) {
-      this.years=[{label: '' + this.selectedYear, value: this.selectedYear}]
+      this.years=[{label: '' + this.selectedYear, value: this.selectedYear}];
+      this.filteredData = this.data.filter(d=>d.Annee===this.selectedYear);
     }
-    this.filteredData = this.data.filter(d => d.RS_client===this.selectedRaison).filter(d=>d.Annee===this.selectedYear);
+    if(this.selectedRaison) {
+      this.filteredData = this.data.filter(d => d.RS_client===this.selectedRaison);
+    }
+    if(this.selectedMounth) {
+      this.filteredData = this.data.filter(d => d.Mois===this.selectedMounth);
+    }
+    if(this.selectedSites) {
+      this.filteredData = this.data.filter(d => d.Site===this.selectedSites);
+    }
+    if(this.selectedDechets) {
+      this.filteredData = this.data.filter(d => this.selectedDechets.includes(d.Dechet));
+    }
+    
     console.log(this.filteredData)
   }
 
