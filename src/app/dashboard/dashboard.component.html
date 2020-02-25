@@ -55,12 +55,12 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-dechet>
                     <tr>
-                        <td>{{dechet}}</td>
+                        <td>{{dechet.value}}</td>
                         <ng-container *ngFor="let year of years">
                             <ng-container *ngFor="let mounth of mounths">
-                                <th>{{someOfMounth(dechet, mounth.value, year.value)}}</th>
+                                <th>{{someOfMounth(dechet.value, mounth.value, year.value)}}</th>
                             </ng-container>
-                            <td>{{someOfYear(dechet, year.value)}}</td>
+                            <td>{{someOfYear(dechet.value, year.value)}}</td>
                         </ng-container>
                     </tr>
                 </ng-template>

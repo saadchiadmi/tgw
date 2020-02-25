@@ -25,24 +25,41 @@ export class DashboardComponent implements OnInit {
   busy: Subscription;
   dechetClo = [{ field: 'dechets', header: 'Chiffres en Kg' }];
   ngOnInit() {
-    this.excelDatatServices.getData().then(res => {
-      this.data = res;
-      console.log(this.data);
-    });
-    
+    this.setData();
+    console.log(this.data);
   }
 
   setData(){
-    this.filteredData = this.data;
-    this.type_collecte = this.data.map(d => d.Type_collecte).filter((value, index, self) => self.indexOf(value) === index).sort();
-    this.data.map(d => d.Annee).filter((value, index, self) => self.indexOf(value) === index).forEach(y => this.years.push({label: '' + y, value: y}));
-    for (let i = 1; i < 13; i++) {
-        this.mounths.push({label: '' + i, value: i});
+    var rec = new XMLHttpRequest();
+    rec.open("GET","assets/DATA.xls", true)
+    rec.responseType= "arraybuffer";
+    let result : Data[];
+    rec.onload = (e) => {
+      var arraybuffer = rec.response;
+      var data = new Uint8Array(arraybuffer);
+      var ar = new Array();
+      for(var i =0 ; i != data.length;i++){
+        ar[i] = String.fromCharCode(data[i]);
+      }
+      var bstr = ar.join("");
+      var workbook = XLSX.read(bstr,{type:"binary"});
+      var first_sheet = workbook.SheetNames[0];
+      var workSheet = workbook.Sheets[first_sheet];
+      this.data = XLSX.utils.sheet_to_json(workSheet,{raw : true})
+      this.filteredData = this.data;
+      this.data.map(d => d.Dechet).filter((value, index, self) => self.indexOf(value) === index).sort().forEach(s => this.dechets.push({label: '' + s, value: s}));
+      this.type_collecte = this.data.map(d => d.Type_collecte).filter((value, index, self) => self.indexOf(value) === index).sort();
+      this.data.map(d => d.Annee).filter((value, index, self) => self.indexOf(value) === index).forEach(y => this.years.push({label: '' + y, value: y}));
+      for (let i = 1; i < 13; i++) {
+          this.mounths.push({label: '' + i, value: i});
+      }
+      this.data.map(d => d.Site).filter((value, index, self) => self.indexOf(value) === index).forEach(s => this.sites.push({label: '' + s, value: s}));
+      this.data.map(d => d.RS_client).filter((value, index, self) => self.indexOf(value) === index).forEach(rs => this.raisons.push({label: '' + rs, value: rs}));
+      this.yearsLoop=this.years;
+      console.log(this.sites);
     }
-    this.data.map(d => d.Dechet).filter((value, index, self) => self.indexOf(value) === index).sort().forEach(s => this.dechets.push({label: '' + s, value: s}));
-    this.data.map(d => d.Site).filter((value, index, self) => self.indexOf(value) === index).forEach(s => this.sites.push({label: '' + s, value: s}));
-    this.data.map(d => d.RS_client).filter((value, index, self) => self.indexOf(value) === index).forEach(rs => this.raisons.push({label: '' + rs, value: rs}));
-    this.yearsLoop=this.years;
+    rec.send();
+    
   }
 
   filtre(){
