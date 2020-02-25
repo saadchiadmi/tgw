@@ -9,7 +9,7 @@ export interface Data{
     Dechet: string;
     Quantite: number;
     Code_traitement: string;
-    Annee: number;
-    Mois: number;
+    Annee: string;
+    Mois: string;
 
 }

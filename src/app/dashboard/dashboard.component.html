@@ -19,7 +19,7 @@
                     <br><br>
                     <p-dropdown [options]="mounths" placeholder="Tous les mois" [(ngModel)]="selectedMounth" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
                     <br><br><br>
-                    <button pButton type="button" (click)="filtre()" label="Actualiser" class="ui-button-success btn-block" ></button>
+                    <button pButton type="button" (click)="filter()" label="Actualiser" class="ui-button-success btn-block" ></button>
                 </div>
                 <div class="col-5">
                     <p-multiSelect [options]="dechets"  [defaultLabel]="'Tous les déchets'" [(ngModel)]="selectedDechets" autoWidth="false" [style]="{'width':'100%'}"></p-multiSelect>

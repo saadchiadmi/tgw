@@ -17,11 +17,11 @@ export class DashboardComponent implements OnInit {
   filteredData : Data[];
   dechets : SelectItem[]= []; selectedDechets: string[] = [];
   type_collecte : string[];
-  years : SelectItem[]= []; selectedYear : number;
+  years : SelectItem[]= []; selectedYear : string='';
   yearsLoop : SelectItem[]= [];
-  mounths : SelectItem[] = []; selectedMounth : number;
-  sites : SelectItem[]= []; selectedSites : string;
-  raisons : SelectItem[]= []; selectedRaison : string;
+  mounths : SelectItem[] = []; selectedMounth : string='';
+  sites : SelectItem[]= []; selectedSites : string='';
+  raisons : SelectItem[]= []; selectedRaison : string='';
   busy: Subscription;
   dechetClo = [{ field: 'dechets', header: 'Chiffres en Kg' }];
   ngOnInit() {
@@ -63,32 +63,33 @@ export class DashboardComponent implements OnInit {
   }
 
   filter(){
+    this.filteredData=this.data;
     if(this.selectedYear) {
       this.years=[{label: '' + this.selectedYear, value: this.selectedYear}];
-      this.filteredData = this.data.filter(d=>d.Annee===this.selectedYear);
+      this.filteredData = this.filteredData.filter(d=>d.Annee==this.selectedYear);
     }
-    if(this.selectedRaison) {
-      this.filteredData = this.data.filter(d => d.RS_client===this.selectedRaison);
+    if(this.selectedRaison!='') {
+      this.filteredData = this.filteredData.filter(d => d.RS_client==this.selectedRaison);
     }
-    if(this.selectedMounth) {
-      this.filteredData = this.data.filter(d => d.Mois===this.selectedMounth);
+    if(this.selectedMounth!='') {
+      this.filteredData = this.filteredData.filter(d => d.Mois==this.selectedMounth);
     }
-    if(this.selectedSites) {
-      this.filteredData = this.data.filter(d => d.Site===this.selectedSites);
+    if(this.selectedSites!='') {
+      this.filteredData = this.filteredData.filter(d => d.Site==this.selectedSites);
     }
-    if(this.selectedDechets) {
-      this.filteredData = this.data.filter(d => this.selectedDechets.includes(d.Dechet));
+    if(this.selectedDechets.length>0) {
+      this.filteredData = this.filteredData.filter(d => this.selectedDechets.includes(d.Dechet));
     }
     
     console.log(this.filteredData)
   }
 
-  someOfMounth(dechet : string, mounth : number, year : number): string{
+  someOfMounth(dechet : string, mounth : string, year : string): string{
     return this.filteredData.filter(d => d.Dechet===dechet).filter(d => d.Mois == mounth).filter(d => d.Annee == year)
                       .reduce((sum, current) => sum + current.Quantite, 0).toFixed(2);
   }
 
-  someOfYear(dechet : string, year : number): string{
+  someOfYear(dechet : string, year : string): string{
     return this.filteredData.filter(d => d.Dechet===dechet).filter(d => d.Annee == year)
                       .reduce((sum, current) => sum + current.Quantite, 0).toFixed(2);
   }
