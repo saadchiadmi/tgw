@@ -5,7 +5,7 @@
         <div class="card-body" >
             <p>Sélectionnez ou cochez pour filtrer vos données</p>
             <div class="row">
-                <div class="col-4">
+                <div class="col">
                     <p-dropdown [options]="raisons" placeholder="Toutes les raisons sociales" [(ngModel)]="selectedRaison" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
                     <br><br>
                     <p-dropdown [options]="sites" placeholder="Tous les sites" [(ngModel)]="selectedSites" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
@@ -17,32 +17,35 @@
                 <div class="col">
                     <p-dropdown [options]="yearsLoop" placeholder="Toutes les années" [(ngModel)]="selectedYear" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
                     <br><br>
-                    <p-dropdown [options]="mounths" placeholder="Tous les mois" [(ngModel)]="selectedMounth" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
-                    <br><br><br>
-                    <button pButton type="button" (click)="filter()" label="Actualiser" class="ui-button-success btn-block" ></button>
+                    <p-dropdown [options]="mounthLoop" placeholder="Tous les mois" [(ngModel)]="selectedMounth" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
                 </div>
                 <div class="col-5">
                     <p-multiSelect [options]="dechets"  [defaultLabel]="'Tous les déchets'" [(ngModel)]="selectedDechets" autoWidth="false" [style]="{'width':'100%'}"></p-multiSelect>
                     <br><br>
                     <div class="row">
-                        <div *ngFor="let type of type_collecte">
+                        <div *ngFor="let type of type_collecte; let index = index;">
                             &nbsp;&nbsp;&nbsp;
-                            <p-checkbox name="{{type}}" value="{{type}}" label="Collect {{type}}"></p-checkbox>
+                            <p-checkbox name="{{type}}" value="{{type}}" (onChange)="changeCheckbox($event, type)" label="Collect {{type}}"></p-checkbox>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-12">
+                    <button pButton type="button" (click)="filter()" label="Actualiser" class="ui-button-success" ></button>
                 </div>
             </div>
         </div>
     </div>
     <div class="margin card shadow-sm">
         <div class="card-body">
-            <p-table [value]="dechets">
+            <p-table [value]="selectedDechets" [scrollable]="true">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th rowspan="2">Chiffres en Kg</th>
+                        <th style="width:150px" rowspan="2">Chiffres en Kg</th>
                         <ng-container *ngFor="let year of years">
-                            <th  colspan="12">{{year.label}}</th>
-                            <th rowspan="2">Total</th>
+                            <th style="width:720px" colspan="12">{{year.label}}</th>
+                            <th style="width:100px" rowspan="2">Total</th>
                         </ng-container>
                     </tr>
                     <tr>
@@ -53,14 +56,14 @@
                         </ng-container>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-dechet>
+                <ng-template pTemplate="body" let-selectedDechet>
                     <tr>
-                        <td>{{dechet.value}}</td>
+                        <td style="width:150px">{{selectedDechet}}</td>
                         <ng-container *ngFor="let year of years">
                             <ng-container *ngFor="let mounth of mounths">
-                                <th>{{someOfMounth(dechet.value, mounth.value, year.value)}}</th>
+                                <th style="width:60px">{{someOfMounth(selectedDechet, mounth.value, year.value)}}</th>
                             </ng-container>
-                            <td>{{someOfYear(dechet.value, year.value)}}</td>
+                            <td *ngIf="year!=''" style="width:100px">{{someOfYear(selectedDechet, year.value)}}</td>
                         </ng-container>
                     </tr>
                 </ng-template>
